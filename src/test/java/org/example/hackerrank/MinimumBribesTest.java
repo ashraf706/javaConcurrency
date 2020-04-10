@@ -73,39 +73,41 @@ public class MinimumBribesTest {
         }
 
         int swapCount = 0;
-        boolean chaos;
+        int index = 0;
 
         do {
-            chaos = doSwap(q, result);
+            index = swapElement(q, result, index);
             swapCount++;
-        } while (!chaos && !Arrays.equals(result, q));
+        } while (index > -1 && !Arrays.equals(result, q));
 
-        if (chaos) {
-            System.out.println("Too Chaotic");
-            return -1;
+        if (index == -1) {
+            System.out.println("Too chaotic");
+            return index;
         } else {
             System.out.println(swapCount);
             return swapCount;
         }
     }
 
-    private boolean doSwap(int[] queue, int result[]) {
-        for (int position = 0; position < result.length; position++) {
+    private int swapElement(int[] queue, int result[], int idx) {
+        int position;
+        for (position = idx; position < result.length; position++) {
             int element = result[position];
             int elementInQueue = queue[position];
 
             if (element != elementInQueue) {
                 int indexInResult = indexOfIntArray(result, elementInQueue);
                 if (position < indexInResult && (Math.abs(position - indexInResult) > 2)) {
-                    return true;
+                    return -1;
                 }
+                //swap
                 int temp = result[indexInResult];
                 result[indexInResult] = result[indexInResult - 1];
                 result[indexInResult - 1] = temp;
                 break;
             }
         }
-        return false;
+        return position;
     }
 
     public static int indexOfIntArray(int[] array, int key) {
