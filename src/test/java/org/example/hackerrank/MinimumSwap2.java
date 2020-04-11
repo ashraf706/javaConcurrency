@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Vector;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -28,7 +29,6 @@ public class MinimumSwap2 {
     public void minimumSwap() {
         int result = minimumSwaps(new int[]{4, 3, 1, 2});
         assertEquals(3, result);
-
         result = minimumSwaps(new int[]{7, 1, 3, 2, 4, 5, 6});
         assertEquals(5, result);
 
@@ -37,22 +37,34 @@ public class MinimumSwap2 {
 
         result = minimumSwaps(new int[]{1, 3, 5, 2, 4, 6, 7});
         assertEquals(3, result);
+
+        int[] bigArray = {2, 31, 1, 38, 29, 5, 44, 6, 12, 18, 39, 9, 48, 49, 13, 11, 7, 27, 14, 33, 50, 21, 46, 23, 15, 26, 8, 47, 40, 3, 32
+                , 22, 34, 42, 16, 41, 24, 10, 4, 28, 36, 30, 37, 35, 20, 17, 45, 43, 25, 19};
+        result = minimumSwaps(bigArray);
+        assertEquals(46, result);
+
     }
 
     static int minimumSwaps(int[] arr) {
         HashMap<Integer, Integer> map = new HashMap<>();
 
+        Vector<Integer> vec = new Vector<>();
+
         //add arr element to the map
         for (int i = 0; i < arr.length; i++) {
-            map.put(i, arr[i]);
+            if (arr[i] != i + 1) {
+                vec.add(arr[i]);
+                map.put(i, arr[i]);
+            }
+
         }
         int swapCount = 0;
-        for (int position = 0; position < arr.length; position++) {
-            int item = position + 1;
-            if (map.get(position) != item) {
-                int temp = map.get(position);
+        for (int position = 0; position < vec.size(); position++) {
+            int item = vec.get(position);
+            if (map.get(item - 1) != item) {
+                int temp = map.get(item - 1);
                 Integer currentPosition = getKey(map, item);
-                map.put(position, item);
+                map.put(item - 1, item);
                 map.put(currentPosition, temp);
                 swapCount++;
             }
