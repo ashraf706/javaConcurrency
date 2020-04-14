@@ -2,6 +2,7 @@ package org.example.hackerrank;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,14 +29,30 @@ public class MinimumSwap2 {
         assertEquals(46, result);
     }
 
+    @Test
+    public void reverse() {
+        int result = minimumSwaps(new int[]{3, 1, 2, 4});
+        assertEquals(2, result);
+
+        result = minimumSwaps(new int[]{3, 4, 1, 2});
+        assertEquals(2, result);
+
+        result = minimumSwaps(new int[]{3, 1, 2});
+        assertEquals(1, result);
+    }
+
     static int minimumSwaps(int[] arr) {
+        ArrayList<Integer> lst = new ArrayList<>();
+        int[] primitive = lst.stream()
+                .mapToInt(Integer::intValue)
+                .toArray();
         Map<Integer, Integer> map = createUnorderedMapFrom(arr);
         int[] unorderedItems = map.values().stream().mapToInt(i -> i).toArray();
         int swapCount = 0;
 
         for (int item : unorderedItems) {
-            if (!isItemInCorrectPosition(item, map)) {
-                swapItemInCorrectPosition(item, map);
+            if (!isItemInCorrectPosition(item, map, unorderedItems.length)) {
+                swapItemInCorrectPosition(item, map, unorderedItems.length);
                 swapCount++;
             }
         }
@@ -43,8 +60,8 @@ public class MinimumSwap2 {
         return swapCount;
     }
 
-    public static void swapItemInCorrectPosition(int item, Map<Integer, Integer> map) {
-        int itemCorrectIndex = item - 1;
+    public static void swapItemInCorrectPosition(int item, Map<Integer, Integer> map, int length) {
+        int itemCorrectIndex = length - item;
         int temp = map.get(itemCorrectIndex);
         Integer itemCurrentIndex = getIndex(map, item);
 
@@ -52,15 +69,15 @@ public class MinimumSwap2 {
         map.put(itemCurrentIndex, temp);
     }
 
-    public static boolean isItemInCorrectPosition(int item, Map<Integer, Integer> map) {
-        return map.get(item - 1) == item;
+    public static boolean isItemInCorrectPosition(int item, Map<Integer, Integer> map, int length) {
+        return map.get(length - item) == item;
     }
 
     public static Map<Integer, Integer> createUnorderedMapFrom(int[] arr) {
         HashMap<Integer, Integer> map = new HashMap<>();
 
         for (int i = 0; i < arr.length; i++) {
-            if (arr[i] != i + 1) {
+            if (arr[i] != arr.length + 1) {
                 map.put(i, arr[i]);
             }
         }
