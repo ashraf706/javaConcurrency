@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -17,6 +18,21 @@ public class FrogRiverOne {
     }
 
     int solution(int X, int[] A) {
+        HashSet<Integer> set = new HashSet<>();
+
+        for (int i = 0; i < A.length; i++) {
+            if (A[i] <= X) {
+                set.add(A[i]);
+                if (set.size() == X) {
+                    return i;
+                }
+            }
+        }
+
+        return -1;
+    }
+
+    int solution1(int X, int[] A) {
         ArrayList<Integer> steps = new ArrayList<>();
         for (int i = 1; i <= X; i++) {
             steps.add(i);
